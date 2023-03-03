@@ -46,3 +46,4 @@ class SettingsProfil(DataMixin, View):
 
             user.save()
         return redirect('prof:profil_settings')
+        
