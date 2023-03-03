@@ -1,0 +1,32 @@
+{% extends 'shop/base.htm' %}
+
+{% block content %}
+
+<br>
+<h1>{{title}}</h1>
+<br>
+<div class="row">
+ <div class="col col-12">
+    <table class="table table-bordered border-primary">
+        <tbody>
+            <tr>
+                <th>Намиенование</th>
+                <th>Фото</th>
+                <th>Стоимость</th>
+                
+            </tr>
+          
+            {% for prod in product_in_order %}
+                    <tr>
+                        <td><a href="{{ prod.get_absolute_url }}">{{ prod }}</a></td>
+                        <td><img src="{{ prod.photo.url }}" class="card-img-top" alt="..." width="100px" height="100px"></td>
+                        <th>{{ prod.price }}</th>
+                        
+                    </tr>
+            {% endfor %}
+          
+        </tbody>
+    </table> 
+ </div>
+</div>
+{% endblock content %}

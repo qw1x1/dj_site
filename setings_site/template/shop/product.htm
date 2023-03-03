@@ -1,0 +1,55 @@
+{% extends 'shop/base.htm' %} <!-- импортируем базовый шаблон -->
+{% load static %}
+<!-- расширяем базовый шаблон -->
+{% block content %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ product.category.get_absolute_url }}">{{ product.category }}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{product.name}}</li>
+  </ol>
+</nav>
+<h1>{{title}}</h1>
+
+<img src="{{ product.photo.url }}" class="img-thumbnail" alt="..." width="250px" height="300px">
+
+    <div class="card-body">
+      <h6 class="text">{{ product.description }}</h6>
+      {% if product.available and product.colum > 1 %}
+      <p class="text">Есть в наличии <a href="#" title="{{ product.colum }} шт"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-patch-check-fill" viewBox="0 0 16 16">
+        <path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01-.622-.636zm.287 5.984-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708.708z"/>
+      </svg></a>
+      {% else %}
+      <p class="text">Нет в наличии <a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-patch-exclamation-fill" viewBox="0 0 16 16">
+        <path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01-.622-.636zM8 4c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995A.905.905 0 0 1 8 4zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+      </svg></p></a>
+      {% endif %}
+      <h5 class="text">{{ product.price }} руб</h5>
+      <br>
+    {% if product.available and product.colum > 1 %} 
+      {% if product.slug not in request.session.cart or not request.session.cart %}
+        {% include "cart/add_to_cart_button.htm" with slug=product.slug %}
+      {% else %}
+        {% include "cart/remove_to_cart_button.htm" with slug=product.slug %}
+      {% endif %}
+    {% endif %}
+
+    </div>
+
+    <table class="table table-bordered border-primary">
+      <tbody>
+        <tr>
+          <th scope="row">Остаток:</th>
+          <td>{{ product.colum }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Стоимость:</th>
+          <th>{{ product.price }},руб</th>
+        </tr>
+        <tr>
+          <th scope="col">Описание:</th>
+          <td scope="col">{{ product.description }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+{% endblock content %}

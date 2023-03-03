@@ -1,0 +1,169 @@
+{% extends 'shop/base.htm' %} 
+{% load static %}
+
+{% block content %}
+<br>
+
+<div class="container">
+  <div class="row justify-content-md-center input-group flex-nowrap ">
+
+      <div class="col col-12">
+        <h1>{{ title }}</h1><br>
+        
+      <div class="row">
+
+        <div class="col col-4">
+          <style>
+            .round {
+             border-radius: 200px; 
+             border: 1px solid rgb(0, 0, 0); 
+            }
+          </style>
+          {% if profil.photo %}
+            <img src="{{profil.photo.url}}" class="round" alt="..." width="200px" height="200px"><br><br>
+          {% else %}
+            <img src="/media/user_photos/default_photo.png" class="round" alt="..." width="200px" height="200px"><br><br>
+          {% endif %}
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updata_photo">Изменить фото</button>
+        </div>
+
+        <div class="col col-8">
+          <ul>
+            {% if user.first_name %}
+            <li><h5>Имя: {{ user.first_name }}</h5><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updata_user_name">Изменить Имя</button></li>
+            {% else %}
+            <li><h5><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updata_user_name">Добавить Имя</button></h5></li>
+            {% endif %}
+
+            
+            {% if profil.birth_date %}
+              <li><h5>Возраст: {{ profil.age }} года</h5></li>
+            {% endif %}
+
+            {% if profil.birth_date %}
+            <li><h5>Дата рождения: {{ profil.birth_date }}</h5></li>
+            {% else %}
+            <li><h5><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updata_birth_date">Добавить дату рождения</button></h5></li>
+            {% endif %}
+
+            {% if profil.number_phon %}
+            <li><h5>Номер телефона: {{ profil.number_phon }}</h5><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updata_number_phone">Изменить телефон</button></li>
+            {% else %}
+            <li><h5><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updata_number_phone">Укажите ваш телефон</button></h5></li>
+            {% endif %}
+
+            <!-- <li><h5>Номер телефона: {{ profil.number_phon }}</h5><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updata_number_phone">Изменить телефон</button></li> -->
+            <li><h5>E-mail: {{ user.email }}</h5><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updata_email">Изменить E-mail</button></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="modal fade" id="updata_photo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Выберите фото</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form method="post">{% csrf_token %}
+                  <input type="file" name="photo" value="" multiple accept="image/*,image/jpeg">
+                  <br>
+                  <br>
+                  <button type="submit" class="btn btn-primary">Сохранить</button>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      <div class="modal fade" id="updata_number_phone" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Введите ваш телефон</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form method="post">{% csrf_token %}
+                  <input type="text" class="form-control" name ="number_phon" value=""  placeholder="Номер телефона " aria-label="Number_phone" aria-describedby="basic-addon1">
+                    <br>
+                  <button type="submit" class="btn btn-primary">Сохранить</button>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      <div class="modal fade" id="updata_email" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Введите ваш E-mail</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form method="post">{% csrf_token %}
+                  <input type="text" class="form-control" name="mail" value=""  placeholder="E-mail:" aria-label="E_mail" aria-describedby="basic-addon1">
+                    <br>
+                  <button type="submit" class="btn btn-primary">Сохранить</button>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      <div class="modal fade" id="updata_user_name" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Введите ваше имя</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form method="post">{% csrf_token %}
+                  <input type="text" class="form-control" name="user_name" value=""  placeholder="Имя:" aria-label="name" aria-describedby="basic-addon1">
+                    <br>
+                  <button type="submit" class="btn btn-primary">Сохранить</button>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      <div class="modal fade" id="updata_birth_date" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Введите дату вашего рождения</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form method="post">{% csrf_token %}
+                  <input type="datetime" class="form-control" name="birth_date" value=""  placeholder="Дата:" aria-label="birth_date" aria-describedby="basic-addon1">
+                    <br>
+                  <button type="submit" class="btn btn-primary">Сохранить</button>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+              </div>
+            </div>
+          </div>
+        </div><hr>
+
+    </div>
+  </div>
+{% endblock content %}
