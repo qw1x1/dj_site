@@ -15,7 +15,7 @@
 $ git config --global user.name "qw1x1"
 $ git config --global user.email "qw1x.stars@gmail.com"
 
-@builtin git - При ошибке в vs_code ""
+@builtin git - При ошибке в vs_code "Поставщики системы управления версиями не зрегестрированы"
 
 
 
