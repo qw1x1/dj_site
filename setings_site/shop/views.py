@@ -23,11 +23,12 @@ class SgopHome(DataMixin, ListView):
 
     # Для выборки данных оперделим метод get_queryset
     def get_queryset(self):
+        title__icontains
         # .select_related('cat') - жадная загруpка ForeignKey
         try:
-            return Product.objects.filter(available=True).select_related('category').order_by(self.request.GET.get('orderby'))
+            return Product.objects.filter(available=True).order_by(self.request.GET.get('orderby'))
         except:
-            return Product.objects.filter(available=True).select_related('category')
+            return Product.objects.filter(available=True)
 
 # Страница котрегории
 class ProductCategory(DataMixin, ListView):
