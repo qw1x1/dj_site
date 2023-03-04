@@ -8,6 +8,7 @@ from django.views.generic import ListView, DetailView, CreateView, FormView # И
 from django.contrib.auth.mixins import LoginRequiredMixin # Миксин для блокировки доступа не авторизованным пользователям 
 from django.contrib.auth.views import LoginView 
 from django.contrib.auth import logout, login
+from django.db.models import Q
 
 class SgopHome(DataMixin, ListView):
     model = Product # атрибут model ссылается на модель 
@@ -23,11 +24,14 @@ class SgopHome(DataMixin, ListView):
 
     # Для выборки данных оперделим метод get_queryset
     def get_queryset(self):
-        title__icontains
-        # .select_related('cat') - жадная загруpка ForeignKey
+        
+        # Product.objects.filter(Q(available=True) | Q(name__icontains = self.request.GET.get('search')))
+
         try:
             return Product.objects.filter(available=True).order_by(self.request.GET.get('orderby'))
         except:
+            if self.request.GET.get('search'):
+                return Product.objects.filter(name__icontains = self.request.GET.get('search'))
             return Product.objects.filter(available=True)
 
 # Страница котрегории
