@@ -42,5 +42,5 @@ class DataMixin:
 
     @classmethod
     def validate_mail(mail):
-        pass
+        return re.findall(r'(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)', mail)
 
