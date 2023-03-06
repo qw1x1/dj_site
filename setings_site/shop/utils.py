@@ -2,6 +2,7 @@ from .models import *
 from django.db.models import Count
 from django.core.cache import cache
 from django.db.models import Sum
+import re
 
 
 menu = [{'title': "О нас", 'url_name': 'home'},
@@ -30,3 +31,16 @@ class DataMixin:
         context['category'] = category
  
         return context
+
+    @classmethod
+    def validate_nuber_phone(nuber_phone):
+        return "".join(re.findall(r'(\+375|80|375).*?(\d{2}).*?(\d{3}).*?(\d{2}).*?(\d{2})', nuber_phone)[0])
+
+    @classmethod
+    def validate_birth_date(birth_date):
+        pass
+
+    @classmethod
+    def validate_mail(mail):
+        pass
+

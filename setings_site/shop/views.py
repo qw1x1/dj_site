@@ -24,9 +24,7 @@ class SgopHome(DataMixin, ListView):
 
     # Для выборки данных оперделим метод get_queryset
     def get_queryset(self):
-        
         # Product.objects.filter(Q(available=True) | Q(name__icontains = self.request.GET.get('search')))
-
         try:
             return Product.objects.filter(available=True).order_by(self.request.GET.get('orderby'))
         except:
@@ -34,35 +32,29 @@ class SgopHome(DataMixin, ListView):
                 return Product.objects.filter(name__icontains = self.request.GET.get('search'))
             return Product.objects.filter(available=True)
 
-# Страница котрегории
 class ProductCategory(DataMixin, ListView):
-    model = Product # атрибут model ссылается на модель 
-    template_name = 'shop/index.htm' # Передаём шаблон в представление
-    # ListView - автоматически формирует колекцию object_list, с которой можно работать в teamplate, либо можем переопределить это имя 
+    model = Product 
+    template_name = 'shop/index.htm'
     context_object_name = 'product'
     allow_empty = True
 
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs) # Сохраняем уже сформированный контекст
-        # Через контекст обращаемся к posts, берём 1-ю запись и берем категорию, при этом в модели сработаем метод __str__ и вернём name
+        context = super().get_context_data(**kwargs)
         c = Category.objects.get(slug=self.kwargs['category_slug'])
         c_def = self.get_user_context(title='Категория - ' + str(c.name))
         return dict(list(context.items()) + list(c_def.items()))
 
-    # Для выборки данных оперделим метод get_queryset
     def get_queryset(self):
         try:
             return Product.objects.filter(category__slug=self.kwargs['category_slug'], available=True).select_related('category').order_by(self.request.GET.get('orderby'))
         except:
             return Product.objects.filter(category__slug=self.kwargs['category_slug'], available=True).select_related('category')
         
-
-# Страница отдельного товара
 class ShowProduct(DataMixin, DetailView):
     model = Product
     template_name = 'shop/product.htm'
-    slug_url_kwarg = 'product_slug' # Принудительно переопреденяем имя переменной из urls
+    slug_url_kwarg = 'product_slug' 
     context_object_name = 'product' 
     allow_empty = True
 
