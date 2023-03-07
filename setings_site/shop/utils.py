@@ -32,15 +32,14 @@ class DataMixin:
  
         return context
 
-    @classmethod
+    @staticmethod
     def validate_nuber_phone(nuber_phone):
-        return "".join(re.findall(r'(\+375|80|375).*?(\d{2}).*?(\d{3}).*?(\d{2}).*?(\d{2})', nuber_phone)[0])
+        return re.findall(r'(\+375|80|375).*?(\d{2}.*?\d{3}.*?\d{2}.*?\d{2})', nuber_phone)
 
-    @classmethod
+    @staticmethod
     def validate_birth_date(birth_date):
-        pass
+        return re.findall(r'(\d{4}-\d\d-\d\d)', birth_date)
 
-    @classmethod
+    @staticmethod
     def validate_mail(mail):
         return re.findall(r'(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)', mail)
-
